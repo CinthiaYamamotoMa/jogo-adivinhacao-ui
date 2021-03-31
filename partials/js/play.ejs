@@ -1,0 +1,131 @@
+<script>
+    var tentativas = 1
+
+    var rodada = 1
+
+    var tentativasMaiores = []
+
+    var tentativasMenores = []
+
+    function attempt(e) {
+        e.preventDefault()
+
+        var maiorOuMenor = e.srcElement.id
+        var numeroTentativa = $("#number")[0].textContent
+
+        numeroTentativa = parseInt(numeroTentativa)
+        tentativas++
+        rodada++
+        if (maiorOuMenor == "maior") {
+            tentativasMenores.push(numeroTentativa)
+            buscarValorMaior(numeroTentativa, getMinRange(tentativasMenores), getMaxRange(tentativasMaiores))
+        } else if (maiorOuMenor == "menor") {
+            tentativasMaiores.push(numeroTentativa)
+            buscarValorMenor(numeroTentativa, getMinRange(tentativasMenores), getMaxRange(tentativasMaiores))
+        } else if (maiorOuMenor == "igual") {
+            win()
+        }
+    }
+
+    $(document).ready(() => {
+        var max = 1000
+        var min = 1
+        var attempt = randomNumber(max, min)
+        $("#number").text(attempt)
+    })
+
+    function addListAttempts(newNumber, numeroTentativa) {
+        var attemptList = document.querySelector(".palpites")
+        attemptList.textContent += numeroTentativa + ", "
+        $("#number").text(newNumber)
+        $("#attempts").text(tentativas)
+        $("#attempts").text(rodada)
+    }
+
+    function buscarValorMenor(numeroTentativa, menor, maior) {
+        addListAttempts(randomNumber(maior, menor), numeroTentativa)
+    }
+
+    function buscarValorMaior(numeroTentativa, menor, maior) {
+        addListAttempts(randomNumber(maior, menor), numeroTentativa)
+    }
+
+    function randomNumber(max, min) {
+        var random = Math.floor(Math.random() * (max - min)) + min
+        return random;
+    }
+
+    function getMinRange(tentativasMenores) {
+        var min = 0;
+        if (!isEmpty(tentativasMenores)) {
+            for (var i = 0; i < tentativasMenores.length; i++) {
+                if (tentativasMenores[i] > min) {
+                    min = tentativasMenores[i]
+                }
+            }
+
+        } else {
+            min = 0
+        }
+        return min;
+    }
+
+    function getMaxRange() {
+        var max = 1001;
+        if (!isEmpty(tentativasMaiores)) {
+            for (var i = 0; i < tentativasMaiores.length; i++) {
+                if (tentativasMaiores[i] < max) {
+                    max = tentativasMaiores[i]
+                }
+            }
+        } else {
+            min = 1001
+        }
+        return max;
+    }
+
+    function win() {
+        $("#divBtn").css( "display", "none" );
+        $("#playAgain").css( "display", "" );
+        alert(`O sistema adivinhou em ${$("#attempts")[0].textContent} tentativas`)
+        const timeStart = '<%= timeStart %>'
+        axios({
+            method: 'post',
+            url: `/win`,
+            data: {
+                username: '<%= username %>',
+                total_time: msToTime((timeStart - new Date().getTime()) * (-1)),
+                attempts: `${tentativas}`,
+                round: `${rodada}`
+            }
+        })
+    }
+
+    function msToTime(duration) {
+        var milliseconds = Math.floor((duration % 1000) / 100),
+            seconds = Math.floor((duration / 1000) % 60),
+            minutes = Math.floor((duration / (1000 * 60)) % 60),
+            hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+        hours = (hours < 10) ? "0" + hours : hours;
+        minutes = (minutes < 10) ? "0" + minutes : minutes;
+        seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+        return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+    }
+
+    function isEmpty(obj) {
+        for (var prop in obj) {
+            if (obj.hasOwnProperty(prop))
+                return false;
+        }
+        return true;
+    }
+
+    function playAgain(e) {
+        $("#divBtn").css( "display", "" );
+        $("#playAgain").css( "display", "none" );
+        window.location.href = "/play/<%= username %>"
+    }
+
+</script>

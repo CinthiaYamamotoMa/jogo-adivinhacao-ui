@@ -1,0 +1,197 @@
+<%- include ('../partials/header.ejs'); %>
+    <%- include ('../partials/style.ejs'); %>
+
+        <html>
+
+        <body class="page-leaderboard">
+            <div id="contain-all" class=" slideout-panel">
+                <section class="leaderboard-progress">
+                    <div class="container" style="margin-top: 50px;">
+                        <button type="button" class="btn btn-secondary"><a href="/"
+                                style="color: black;">Voltar</a></button>
+                    </div>
+                    <div class="text-center">
+                        <h2>Jogo da Adivinhação</h2>
+                    </div>
+
+                    <div class="row align-items-start">
+                        <div class="col-4"></div>
+                        <div class="col-4 text-center">
+                            <h4><span class="badge bg-secondary">
+                                    <%= username %>
+                                </span></h4>
+                        </div>
+                    </div>
+
+                </section>
+                <section class="">
+                    <div class="contain">
+                        <div class="ranking-table">
+                            <div class="row align-items-start">
+                                <div class="col-4"></div>
+                                <div class="col-4 text-center">
+                                    <div class="count" id="number">0</div>
+                                </div>
+                            </div>
+                            <div class="contain text-center">
+                                <button type="button" class="btn btn-info" id="menor" onclick="attempt(event)"><i
+                                        class="fa fa-arrow-down" aria-hidden="true"></i> Menor</button>
+                                <button type="button" class="btn btn-info" id="igual" onclick="attempt(event)">Igual <i
+                                        class="fa fa-check" aria-hidden="true"></i></button>
+                                <button type="button" class="btn btn-info" id="maior" onclick="attempt(event)">Maior <i
+                                        class="fa fa-arrow-up" aria-hidden="true"></i></button>
+                            </div>
+                            <div class="row align-items-start">
+                                <div class="col-2">
+                                    <h4 class="row"><span class="badge bg-secondary">Tentativas</span></h4>
+                                    <h4 class="row"><span class="badge bg-light" style="color: black;"
+                                            id="attempts">12</span></h4>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <p id="attemptList" class="palpites"></p>
+                                </div>
+                            </div>
+                        </div>
+                </section>
+            </div>
+        </body>
+
+        </html>
+        <script src="https://kit.fontawesome.com/f8740a3c24.js" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+
+        <script>
+            var tentativas = 0
+
+            // numeros que foram considerados maiores
+            // quando foi clicado o botao menor
+            var tentativasMaiores = []
+
+            // numeros que foram considerados menores
+            // quando foi clicado o botao maior
+            var tentativasMenores = []
+
+            function attempt(e) {
+                e.preventDefault()
+                var maiorOuMenor = e.srcElement.id
+
+                var numeroTentativa = $("#number")[0].textContent
+                console.log('FUNÇÃO 1 - chute >>>>>> ', numeroTentativa)
+                numeroTentativa = parseInt(numeroTentativa)
+                
+                console.log('FUNÇÃO 1 - chute >>>>>> ', tentativas)
+                
+                // quando o btn maior for clicado,
+                // eu tenho que buscar por valores maiores 
+                // que o numero chute
+                if (maiorOuMenor == "maior") {
+
+                    // var higher = getHigher()
+                    tentativasMenores.push(numeroTentativa)
+                    console.log('FUNÇÃO 1 - array de valores menores que o valor pensado >>>>>> ', tentativasMenores)
+
+                    buscarValorMaior(numeroTentativa, getMinRange(tentativasMenores), getMaxRange(tentativasMaiores))
+                } else if (maiorOuMenor == "menor") {
+                    // var smallest = getSmallest()
+                    tentativasMaiores.push(numeroTentativa)
+                    console.log(tentativasMaiores)
+
+                    buscarValorMenor(numeroTentativa, getMinRange(tentativasMenores), getMaxRange(tentativasMaiores))
+                } else if (maiorOuMenor == "igual"){
+                    win()
+                }
+
+            }
+
+            $(document).ready(() => {
+                var max = 1000
+                var min = 1
+                var attempt = randomNumber(max, min)
+                $("#number").text(attempt)
+            })
+
+            function addListWithParam(newNumber, numeroTentativa) {
+                var attemptList = document.querySelector(".palpites")
+
+                attemptList.textContent += numeroTentativa + ", "
+
+                console.log('ADD ', newNumber)
+                console.log('ADD ', $("#number")[0].textContent)
+                $("#number").text(newNumber)
+                $("#number").text(newNumber)
+            }
+
+            function buscarValorMenor(numeroTentativa, menor, maior) {
+                // tentativas.push(numeroTentativa)
+                // addList()
+                console.log('buscarValorMaior numeroTentativa ', numeroTentativa)
+                console.log('buscarValorMaior menor ', menor)
+                console.log('buscarValorMaior maior ', maior)
+                addListWithParam(randomNumber(maior, menor), numeroTentativa)
+
+            }
+
+            function buscarValorMaior(numeroTentativa, menor, maior) {
+                // tentativas.push(numeroTentativa)
+                console.log('buscarValorMaior numeroTentativa ', numeroTentativa)
+                console.log('buscarValorMaior menor ', menor)
+                console.log('buscarValorMaior maior ', maior)
+                addListWithParam(randomNumber(maior, menor), numeroTentativa)
+
+            }
+
+            function randomNumber(max, min) {
+                console.log('RANDOM MAX >> ', max)
+                console.log('RANDOM MIN >> ', min)
+                max = max - 1
+                min = min + 1
+                var random = Math.floor(Math.random() * (max - min)) + min
+                console.log('random >>> ',random)
+                return random;
+            }
+
+            function getMinRange(tentativasMenores) {
+                var min = 0;
+                console.log('valores menores', tentativasMenores)
+                if (!isEmpty(tentativasMenores)){
+                    for (var i = 0; i < tentativasMenores.length; i++) {
+                        if (tentativasMenores[i] > min) {
+                            min = tentativasMenores[i]
+                        }
+                    }
+
+                }
+                else {
+                    min = 0
+                }
+                console.log('menor valor do array >> ', min)
+
+                return min;
+            }
+
+            function isEmpty(obj) {
+                for (var prop in obj) {
+                    if (obj.hasOwnProperty(prop))
+                        return false;
+                }
+                return true;
+            }
+
+            function getMaxRange() {
+                var max = 1000;
+                if (!isEmpty(tentativasMaiores)) {
+                    for (var i = 0; i < tentativasMaiores.length; i++) {
+                        if (tentativasMaiores[i] < max) {
+                            max = tentativasMaiores[i]
+                        }
+                    }
+                } else {
+                    min = 10
+                }
+                return max;
+            }
+
+            function win() {
+                alert('deu certo')
+            }
+        </script>

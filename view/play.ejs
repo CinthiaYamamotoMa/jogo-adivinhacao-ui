@@ -1,0 +1,77 @@
+<%- include ('../partials/header.ejs'); %>
+    <%- include ('../partials/style.ejs'); %>
+
+        <html>
+
+        <body class="page-leaderboard">
+            <div id="contain-all" class=" slideout-panel">
+                <section class="leaderboard-progress">
+                    <div class="container" style="margin-top: 50px;">
+                        <button type="button" class="btn btn-secondary"><a href="/"
+                                style="color: black;"><i class="fa fa-chevron-left" aria-hidden="true"></i> Voltar</a></button>
+                    </div>
+                    <div class="text-center">
+                        <h2>Jogo da Adivinhação</h2>
+                    </div>
+
+                    <div class="row align-items-start">
+                        <div class="col-4"></div>
+                        <div class="col-4 text-center">
+                            <h4>
+                                <span class="badge bg-secondary">
+                                    <%= username %>
+                                </span>
+                            </h4>
+                        </div>
+                        
+                    </div>
+
+                </section>
+                <section class="">
+                    <div class="contain">
+                        <div class="ranking-table">
+                            <div class="row align-items-start">
+                                <div class="col-4"></div>
+                                <div class="col-4 text-center">
+                                    <div class="count" id="number">0</div>
+                                </div>
+                            </div>
+                            <div class="contain text-center" id="divBtn">
+                                <button type="button" class="btn btn-info" id="menor" onclick="attempt(event)">Menor <i
+                                        class="fa fa-arrow-down" aria-hidden="true"></i> </button>
+                                <button type="button" class="btn btn-info" id="igual" onclick="attempt(event)">Igual <i
+                                        class="fa fa-check" aria-hidden="true"></i></button>
+                                <button type="button" class="btn btn-info" id="maior" onclick="attempt(event)">Maior <i
+                                        class="fa fa-arrow-up" aria-hidden="true"></i></button>
+                            </div>
+                            <div class="contain text-center" style="display: none" id="playAgain">
+                                <button type="button"  class="btn btn-info" onclick="playAgain(event)">Jogar Novamente <i class="fa fa-repeat" aria-hidden="true"></i></button>
+                            </div>
+                            <div class="row align-items-start">
+                                <div class="col-2">
+                                    <h4 class="row"><span class="badge bg-secondary">Tentativas</span></h4>
+                                    <h4 class="row"><span class="badge bg-light" style="color: black;"
+                                            id="attempts">1</span></h4>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <p id="attemptList" class="palpites"></p>
+                                </div>
+                                <div class="col-4"></div>
+                                <div class="col-2">
+                                    <h4 class="row"><span class="badge bg-secondary">Rodada</span></h4>
+                                    <h4 class="row"><span class="badge bg-light" style="color: black;"
+                                            id="round">1</span></h4>
+                                </div>
+                            </div>
+                        </div>
+                </section>
+            </div>
+        </body>
+
+        </html>
+        <script src="https://kit.fontawesome.com/f8740a3c24.js" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+        <%- include ('../partials/js/play.ejs'); %>

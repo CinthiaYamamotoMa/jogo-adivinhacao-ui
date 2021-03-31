@@ -1,0 +1,69 @@
+<%- include ('../partials/header.ejs'); %>
+  <%- include ('../partials/style.ejs'); %>
+
+    <html>
+
+    <body class="page-leaderboard">
+      <div id="contain-all" class=" slideout-panel">
+        <section class="leaderboard-progress">
+          
+          <div class="contain text-center">
+            <h2>Jogo da Adivinhação</h2>
+          </div>
+        </section>
+        <section class="ranking">
+          <div class="contain">
+            <div class="ranking-table">
+              <div class="row align-items-start">
+                <div class="col-2"></div>
+                <div class="col-8 text-center">
+                  <p class="lead">
+                    Pense em um número de <span class="badge bg-secondary">1 a 1000</span>.
+                    Tentaremos descobrir informando um número
+                    e você deve classificá-lo como maior, menor ou igual (acerto).
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="row align-items-start mb-3">
+              <div class="col-4"></div>
+              <form class="col-4 text-center">
+                <div class="col-auto mb-3">
+                  <label class="visually-hidden" for="username"></label>
+                  <div class="input-group">
+                    <div class="input-group-text">Nome</div>
+                    <input type="text" class="form-control" id="username">
+                  </div>
+                </div>
+
+                <button type="button" class="btn btn-success" onclick="edit()">Jogar <i class="fa fa-gamepad"
+                    aria-hidden="true"></i></a></button>
+              </form>
+            </div>
+            <div class="contain text-center">
+              <button type="button" class="btn btn-warning"><a href="/ranking" style="color: black;">Ranking <i
+                    class="fa fa-trophy" aria-hidden="true"></i></a></button>
+            </div>
+
+          </div>
+        </section>
+      </div>
+    </body>
+
+    </html>
+    <script src="https://kit.fontawesome.com/f8740a3c24.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+
+    <script>
+      function edit() {
+        var username = $("#username").val()
+        axios({
+          method: 'get',
+          url: `http://localhost:9000/edit/${username}`,
+        })
+        .then(() => {
+          window.location.href = `/edit/${username}`;
+        })
+      }
+    </script>

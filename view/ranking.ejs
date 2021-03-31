@@ -1,0 +1,64 @@
+<%- include ('../partials/header.ejs'); %>
+  <%- include ('../partials/style.ejs'); %>
+
+  <html>
+  <body class="page-leaderboard">
+    <div id="contain-all" class=" slideout-panel">
+      <section class="leaderboard-progress">
+        <div class="container" style="margin-top: 50px;">
+          <button type="button" class="btn btn-secondary"><a href="/" style="color: black;"><i class="fa fa-chevron-left" aria-hidden="true"></i> Voltar</a></button>
+        </div>
+        <div class="contain text-center">
+          <h2>Jogo da Adivinhação</h2>
+          <img style="width: 90px; margin-top: 50px;"
+            src="https://static.vecteezy.com/ti/vetor-gratis/p2/554515-ilustracaoial-trofeu-gr%C3%A1tis-vetor.jpg"
+            alt="">
+          <h2>Ranking </h2>
+        </div>
+      </section>
+      <section class="ranking">
+        <div class="contain">
+          <div class="ranking-table">
+            <div class="ranking-table-header-row">
+              <div class="ranking-table-header-data h6">Posição</div>
+              <div class="ranking-table-header-data h6">Name</div>
+              <div class="ranking-table-header-data h6">Tentativas</div>
+            </div>
+            <% if(ranking != []) { %>
+              <% for (var i = 0; i < ranking.length; i++) { %>
+            <div class="
+            <% if(i == 0) { %>
+              ranking-table-row-leader-1
+            <% } else if(i == 1) { %>
+              ranking-table-row-leader-2
+            <% } else if(i == 2) { %>
+              ranking-table-row-leader-3
+            <% } else if(i == 2) { %>
+              ranking-table-row-leader-3
+            <% } else { %>
+              ranking-table-row-others ranking-table-row-leader-3
+            <% } %>
+
+            ">
+              <div class="ranking-table-data">
+                <%= i + 1%>
+              </div>
+              <div class="ranking-table-data">
+                <%= ranking[i].username %>
+              </div>
+              <div class="ranking-table-data">
+                <%= ranking[i].attempts %>
+              </div>
+            </div>
+            <% } %>
+
+            <% } %>
+          </div>
+      </section>
+    </div>
+  </body>
+  </html>
+  <script src="https://kit.fontawesome.com/f8740a3c24.js" crossorigin="anonymous"></script>
+
+  <script>
+  </script>
